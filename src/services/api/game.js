@@ -17,7 +17,7 @@ export function getGame(id) {
     .then(response => response.json());
 }
 
-function action(route, { x, y }) {
+function action(route, { x, y }, retries = 3) {
   return fetch(route, {
     method: 'POST',
     headers: {
@@ -25,13 +25,21 @@ function action(route, { x, y }) {
     },
     body: JSON.stringify({ x, y }),
   })
-    .then((response) => {
+    .then(async (response) => {
       if (response.ok === true) {
         return response.json();
       }
-      return response.json().then((json) => {
-        throw new Error(json.status);
-      });
+      if (retries > 0) {
+        return action(route, { x, y }, retries - 1);
+      }
+      let json;
+      try {
+        json = response.json();
+      } catch (error) {
+        const text = await response.text();
+        throw new Error(text);
+      }
+      throw new Error(json.status);
     });
 }
 
