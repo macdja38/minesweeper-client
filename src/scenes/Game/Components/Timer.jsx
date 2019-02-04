@@ -9,7 +9,14 @@ export default function Timer({
   loading,
 }) {
   if (loading) {
-    return <><p>test</p></>;
+    return (
+      <NSevenSegmentDisplay
+        value={0}
+        segments={3}
+        onColor="rgba(255,0,0,1)"
+        offColor="rgba(255,0,0,0.2)"
+        style={{ paddingRight: '10px' }}
+      />);
   }
   const [elapsedTime, setElapsedTime] = useState(0);
 
