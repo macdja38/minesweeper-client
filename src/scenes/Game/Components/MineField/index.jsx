@@ -25,7 +25,11 @@ function getTile(tile) {
   if (isBomb(tile)) {
     return '💣';
   }
-  return extractAdjacent(tile).toString();
+  const labelNumber = extractAdjacent(tile);
+  if (labelNumber > 0) {
+    return labelNumber.toString();
+  }
+  return '';
 }
 
 function getTileElement(tile, revealHandler, flagHandler, x, y) {
