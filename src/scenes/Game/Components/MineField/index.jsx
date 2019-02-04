@@ -92,7 +92,16 @@ export default function MineField({
       ...row.map((tile, x) => getTileElement(tile, revealHandler, flagHandler, x, y)),
     ], []);
 
-  return <div className={styles.field}>{field}</div>;
+  return (
+    <div
+      className={styles.field}
+      style={{
+        gridTemplateRows: `repeat(${height}, 1fr)`,
+        gridTemplateColumns: `repeat(${width}, 1fr)`,
+      }}
+    >
+      {field}
+    </div>);
 }
 
 MineField.propTypes = {

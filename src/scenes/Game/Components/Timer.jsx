@@ -28,11 +28,16 @@ export default function Timer({
 
   useEffect(() => {
     if (!completed) {
-      const timer = setInterval(() => {
-        setElapsedIfDifferent(Math.floor((Date.now() - Date.parse(startTime)) / 1000));
-      }, 100);
+      if (startTime) {
+        const timer = setInterval(() => {
+          setElapsedIfDifferent(Math.floor((Date.now() - Date.parse(startTime)) / 1000));
+        }, 100);
 
-      return () => clearInterval(timer);
+        return () => clearInterval(timer);
+      }
+
+      setElapsedIfDifferent(0);
+      return () => {};
     }
 
     if (endTime) {

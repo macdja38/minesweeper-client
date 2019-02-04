@@ -1,13 +1,13 @@
 /* global fetch */
 import routes from './routes';
 
-export function createGame() {
+export function createGame({ width, height }) {
   return fetch(routes.games, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({}),
+    body: JSON.stringify({ width, height }),
   })
     .then(response => response.json());
 }

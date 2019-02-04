@@ -7,6 +7,7 @@ import { createGame } from '../../../../services/api/game';
 
 function getSmiley(state) {
   switch (state) {
+    case 'C':
     case 'S':
       return '🙂';
     case 'L':
@@ -22,7 +23,7 @@ export default function Smiley({ state }) {
   const { history } = useReactRouter();
 
   const smileyClick = () => {
-    createGame().then((game) => {
+    createGame({ width: 9, height: 9 }).then((game) => {
       history.push(`/game/${game.id}`);
     });
   };
@@ -38,5 +39,5 @@ export default function Smiley({ state }) {
 }
 
 Smiley.propTypes = {
-  state: PropTypes.oneOf(['S', 'L', 'W']).isRequired,
+  state: PropTypes.oneOf(['C', 'S', 'L', 'W']).isRequired,
 };

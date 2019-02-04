@@ -16,7 +16,7 @@ export default function GameScene() {
   const [game, setGame] = useState({ game_state: 'S' });
   const [loading, setLoading] = useState(true);
   const { match } = useReactRouter();
-  const completed = game.game_state !== 'S';
+  const completed = game.game_state !== 'S' && game.game_state !== 'C';
 
   useEffect(() => {
     const update = () => {
@@ -61,6 +61,8 @@ export default function GameScene() {
         </Row>
         <MineField
           id={game.id}
+          width={game.width}
+          height={game.height}
           grid={game.client_state}
           setGame={setGame}
           completed={completed}

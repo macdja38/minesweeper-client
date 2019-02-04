@@ -7,7 +7,7 @@ export default function Loading() {
   const { history } = useReactRouter();
 
   useEffect(() => {
-    createGame().then((game) => {
+    createGame({ width: 8, height: 8 }).then((game) => {
       history.push(`/game/${game.id}`);
     });
   }, []);
