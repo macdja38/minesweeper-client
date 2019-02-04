@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
-import { tile as tileStyle, field as fieldStyle } from './index.module.css';
-import { extractAdjacent, isBomb, isFlagged, isHidden } from '../../../../services/api/grid';
+import PropTypes from 'prop-types';
+import gridType from '../../../../props/gridProp';
+import styles from './index.module.css';
+import {
+  extractAdjacent,
+  isBomb,
+  isFlagged,
+  isHidden,
+} from '../../../../services/api/grid';
 import { reveal, flag } from '../../../../services/api/game';
 
+function cx(...args) {
+  return args.join(' ');
+}
 
 function getTile(tile) {
   console.log(tile);
@@ -23,7 +33,7 @@ function getTileElement(tile, revealHandler, flagHandler, x, y) {
     return (
       <button
         type="button"
-        className={tileStyle}
+        className={cx(styles.tile, styles.hidden)}
         onClick={e => revealHandler(e, x, y)}
         onContextMenu={e => flagHandler(e, x, y)}
       >
@@ -31,12 +41,12 @@ function getTileElement(tile, revealHandler, flagHandler, x, y) {
       </button>);
   }
   return (
-    <div className={tileStyle}>
+    <div className={cx(styles.tile, styles.revealed)}>
       {getTile(tile)}
     </div>);
 }
 
-export default function MineField({ loading, grid, id, width, height, setGame }) {
+export default function MineField({ loading, grid, id, width, height, setGame, completed }) {
   const [disabled, setDisabled] = useState(false);
 
   if (loading) {
@@ -52,11 +62,12 @@ export default function MineField({ loading, grid, id, width, height, setGame })
     flag({ id, x, y }).then(game => setGame(game));
   };
 
+
   const field = grid
     .reduce((acc, row, y) => [
       ...acc,
       ...row.map((tile, x) => getTileElement(tile, revealHandler, flagHandler, x, y)),
     ], []);
 
-  return <div className={fieldStyle}>{field}</div>;
+  return <div className={styles.field}>{field}</div>;
 }

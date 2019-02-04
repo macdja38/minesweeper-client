@@ -1,0 +1,28 @@
+.board {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    background-color: silver;
+    grid-template-rows: 3px 20px min-content 20px auto 20px;
+    grid-template-columns: 3px 20px auto 20px;
+}
+
+.bar {
+    box-shadow: 0 0 2px 4px darkgray;
+    grid-area: 3 / 3 / 4 / 4;
+}
+
+.grid {
+    box-shadow: 0 0 2px 4px darkgray;
+    grid-area: 5 / 3 / 6 / 4;
+}
+
+.whiteLeft {
+    grid-area: 1 / 1 / 6 / 2;
+    background-color: white;
+}
+
+.whiteTop {
+    grid-area: 1 / 1 / 2 / 5;
+    background-color: white;
+}
