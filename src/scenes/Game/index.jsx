@@ -7,6 +7,7 @@ import Timer from './Components/Timer';
 import MineField from './Components/MineField/index';
 import DropDown from './Components/DropDown/DropDown';
 import Board from './Components/Board/Board';
+import Option from './Components/Option';
 import { getGame } from '../../services/api/game';
 
 import styles from './index.module.css';
