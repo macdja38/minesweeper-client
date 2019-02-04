@@ -33,6 +33,30 @@ function getTile(tile) {
   return '';
 }
 
+function getColour(tile) {
+  const symbol = getTile(tile);
+  switch (symbol) {
+    case '8':
+      return 'darkgray';
+    case '7':
+      return '#000000';
+    case '6':
+      return '#008080';
+    case '5':
+      return '#800000';
+    case '4':
+      return '#000080';
+    case '3':
+      return '#ff0000';
+    case '2':
+      return '#008000';
+    case '1':
+      return '#0000ff';
+    default:
+      return '#000000';
+  }
+}
+
 function getTileElement(tile, revealHandler, flagHandler, x, y) {
   const key = `${tile}-${x}-${y}`;
 
@@ -49,7 +73,14 @@ function getTileElement(tile, revealHandler, flagHandler, x, y) {
       </button>);
   }
   return (
-    <div key={key} className={cx(styles.tile, styles.revealed)}>
+    <div
+      key={key}
+      style={{
+        color: getColour(tile),
+        fontWeight: 'bold',
+      }}
+      className={cx(styles.tile, styles.revealed)}
+    >
       {getTile(tile)}
     </div>);
 }
