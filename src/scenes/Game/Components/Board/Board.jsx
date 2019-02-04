@@ -7,15 +7,15 @@ export default function Board({ children }) {
     throw new Error(`Board takes two children, ${children.length} were supplied`);
   }
 
-  const Bar = children[0];
-  const Board = children[1];
+  const bar = children[0];
+  const grid = children[1];
 
   return (
     <div className={styles.board}>
       <div className={styles.whiteTop} />
       <div className={styles.whiteLeft} />
-      <div className={styles.bar}>{Bar}</div>
-      <div className={styles.grid}>{Board}</div>
+      <div className={styles.bar}>{bar}</div>
+      <div className={styles.grid}>{grid}</div>
     </div>);
 }
 
