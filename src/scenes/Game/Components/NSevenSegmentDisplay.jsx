@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import SevenSegmentDisplay from 'react-seven-segment-display';
 
 export default function NSevenSegmentDisplay({ value, segments, ...props }) {
-  const segmentValues = Math.abs(value).toString(10).split('');
+  const segmentValues = Math.floor(Math.abs(value)).toString(10).split('');
   while (segmentValues.length > segments) {
     segmentValues.shift();
   }
