@@ -12,14 +12,6 @@ import { getGame } from '../../services/api/game';
 
 import styles from './index.module.css';
 
-function Menu({ children }) {
-  return <div>{children}</div>;
-}
-
-function Option({ children }) {
-  return <div>{children}</div>;
-}
-
 export default function GameScene() {
   const [game, setGame] = useState({ game_state: 'S' });
   const [loading, setLoading] = useState(true);
@@ -27,13 +19,18 @@ export default function GameScene() {
   const completed = game.game_state !== 'S';
 
   useEffect(() => {
-    getGame(match.params.id).then((fetchedGame) => {
-      setGame(fetchedGame);
-      setLoading(false);
-    });
-  }, [match.params.id]);
+    const update = () => {
+      getGame(match.params.id).then((fetchedGame) => {
+        setGame(fetchedGame);
+        setLoading(false);
+      });
+    };
+    update();
 
-  console.log(game);
+    const timer = setInterval(update, 1000);
+
+    return () => clearTimeout(timer);
+  }, [match.params.id]);
 
   return (
     <div className={styles.window}>
