@@ -18,10 +18,15 @@ function getTile(tile) {
   return extractAdjacent(tile).toString();
 }
 
-function getTileElement(tile, clickHandler, x, y) {
+function getTileElement(tile, revealHandler, flagHandler, x, y) {
   if (isHidden(tile)) {
     return (
-      <button type="button" className={tileStyle} onClick={() => clickHandler(x, y)}>
+      <button
+        type="button"
+        className={tileStyle}
+        onClick={e => revealHandler(e, x, y)}
+        onContextMenu={e => flagHandler(e, x, y)}
+      >
         {getTile(tile)}
       </button>);
   }
@@ -38,12 +43,20 @@ export default function MineField({ loading, grid, id, width, height, setGame })
     return <p />;
   }
 
-  const clickHandler = (x, y) => {
+  const revealHandler = (e, x, y) => {
     reveal({ id, x, y }).then(game => setGame(game));
   };
 
+  const flagHandler = (e, x, y) => {
+    e.preventDefault();
+    flag({ id, x, y }).then(game => setGame(game));
+  };
+
   const field = grid
-    .reduce((acc, row, y) => [...acc, ...row.map((tile, x) => getTileElement(tile, clickHandler, x, y))], []);
+    .reduce((acc, row, y) => [
+      ...acc,
+      ...row.map((tile, x) => getTileElement(tile, revealHandler, flagHandler, x, y)),
+    ], []);
 
   return <div className={fieldStyle}>{field}</div>;
 }
