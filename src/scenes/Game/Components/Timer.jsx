@@ -13,24 +13,30 @@ export default function Timer({
   }
   const [elapsedTime, setElapsedTime] = useState(0);
 
+  const setElapsedIfDifferent = (newElapsed) => {
+    if (newElapsed !== elapsedTime) {
+      setElapsedTime(newElapsed);
+    }
+  };
+
   useEffect(() => {
     if (!completed) {
       const timer = setInterval(() => {
-        setElapsedTime(Math.floor((Date.now() - Date.parse(startTime)) / 1000));
+        setElapsedIfDifferent(Math.floor((Date.now() - Date.parse(startTime)) / 1000));
       }, 100);
 
       return () => clearInterval(timer);
     }
 
     if (endTime) {
-      setElapsedTime(Math.floor(Date.parse(endTime) - Date.parse(startTime)) / 1000);
+      setElapsedIfDifferent(Math.floor(Date.parse(endTime) - Date.parse(startTime)) / 1000);
     } else {
-      setElapsedTime(999);
+      setElapsedIfDifferent(999);
     }
 
     return () => {
     };
-  }, [startTime, endTime, completed, loading]);
+  }, [startTime, endTime, completed, loading, elapsedTime]);
 
   return (
     <NSevenSegmentDisplay
