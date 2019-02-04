@@ -57,7 +57,12 @@ export default function GameScene() {
           <Progress>
             <RemainingBombs grid={game.client_state} totalBombs={game.bombs} loading={loading} />
             <Smiley state={game.game_state} loading={loading} />
-            <Timer startTime={game.start_time} loading={loading} />
+            <Timer
+              startTime={game.start_time}
+              endTime={game.end_time}
+              done={game.game_state !== 'S'}
+              loading={loading}
+            />
           </Progress>
           <MineField id={game.id} grid={game.client_state} setGame={setGame} loading={loading} />
         </Board>

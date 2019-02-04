@@ -2,20 +2,30 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import NSevenSegmentDisplay from './NSevenSegmentDisplay';
 
-export default function Timer({ startTime, loading }) {
+export default function Timer({ startTime, endTime, done, loading }) {
   if (loading) {
     return <><p>test</p></>;
   }
   const [elapsedTime, setElapsedTime] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setElapsedTime(Math.floor((Date.now() - Date.parse(startTime)) / 1000));
-    }, 100);
+    if (!done) {
+      const timer = setInterval(() => {
+        setElapsedTime(Math.floor((Date.now() - Date.parse(startTime)) / 1000));
+      }, 100);
 
 
-    return () => clearInterval(timer);
-  }, [loading, startTime]);
+      return () => clearInterval(timer);
+    }
+
+    if (endTime) {
+      setElapsedTime(Math.floor(Date.parse(endTime) - Date.parse(startTime)) / 1000);
+    } else {
+      setElapsedTime(999);
+    }
+
+    return () => {};
+  }, [startTime, endTime, done, loading]);
 
   return (
     <NSevenSegmentDisplay
@@ -29,10 +39,14 @@ export default function Timer({ startTime, loading }) {
 
 Timer.propTypes = {
   startTime: PropTypes.string,
+  endTime: PropTypes.string,
+  done: PropTypes.bool,
   loading: PropTypes.bool,
 };
 
 Timer.defaultProps = {
-  startTime: PropTypes.string,
+  startTime: '',
+  endTime: '',
+  done: false,
   loading: false,
 };
