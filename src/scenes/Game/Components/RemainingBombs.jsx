@@ -17,7 +17,7 @@ export default function RemainingBombs({ grid, totalBombs, loading }) {
         return rowTotal;
       }, 0), 0);
 
-  const remaining = totalBombs - flaggedTiles;
+  const remaining = Math.max(totalBombs - flaggedTiles, 0);
 
   return (
     <NSevenSegmentDisplay
