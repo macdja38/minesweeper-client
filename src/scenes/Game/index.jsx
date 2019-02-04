@@ -7,13 +7,14 @@ import Timer from './Components/Timer';
 import MineField from './Components/MineField/index';
 import DropDown from './Components/DropDown/DropDown';
 import Board from './Components/Board/Board';
-import Option from './Components/Option';
+import Option from './Components/Option/Option';
 import { getGame } from '../../services/api/game';
 
 import styles from './index.module.css';
 
 export default function GameScene() {
   const [game, setGame] = useState({ game_state: 'S' });
+  const [nextGameDimensions, setNextGameDimensions] = useState({ width: 8, height: 8 });
   const [loading, setLoading] = useState(true);
   const { match } = useReactRouter();
   const completed = game.game_state !== 'S' && game.game_state !== 'C';
@@ -37,11 +38,17 @@ export default function GameScene() {
       <Row>
         <DropDown label="Game">
           <Option>New</Option>
-          <br />
-          <Option>Beginner</Option>
-          <Option>Intermediate</Option>
-          <Option>Expert</Option>
-          <br />
+          <hr />
+          <Option onSelect={() => setNextGameDimensions({ width: 8, height: 8 })}>
+            Beginner
+          </Option>
+          <Option onSelect={() => setNextGameDimensions({ width: 16, height: 16 })}>
+            Intermediate
+          </Option>
+          <Option onSelect={() => setNextGameDimensions({ width: 32, height: 16 })}>
+            Expert
+          </Option>
+          <hr />
           <Option>Exit</Option>
         </DropDown>
         <DropDown label="Help">
@@ -51,7 +58,11 @@ export default function GameScene() {
       <Board>
         <Row spread>
           <RemainingBombs grid={game.client_state} totalBombs={game.bombs} loading={loading} />
-          <Smiley state={game.game_state} loading={loading} />
+          <Smiley
+            state={game.game_state}
+            nextGameDimensions={nextGameDimensions}
+            loading={loading}
+          />
           <Timer
             startTime={game.start_time}
             endTime={game.end_time}

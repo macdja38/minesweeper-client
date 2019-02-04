@@ -1,0 +1,14 @@
+.mouseOverOption {
+    display: block;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    width: 100%;
+}
+
+.mouseOverOption:hover {
+    background: #316ac5;
+}

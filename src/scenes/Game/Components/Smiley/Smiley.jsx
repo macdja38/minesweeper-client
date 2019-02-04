@@ -19,11 +19,11 @@ function getSmiley(state) {
   }
 }
 
-export default function Smiley({ state }) {
+export default function Smiley({ state, nextGameDimensions: { width, height } }) {
   const { history } = useReactRouter();
 
   const smileyClick = () => {
-    createGame({ width: 9, height: 9 }).then((game) => {
+    createGame({ width, height }).then((game) => {
       history.push(`/game/${game.id}`);
     });
   };
@@ -40,4 +40,15 @@ export default function Smiley({ state }) {
 
 Smiley.propTypes = {
   state: PropTypes.oneOf(['C', 'S', 'L', 'W']).isRequired,
+  nextGameDimensions: PropTypes.shape({
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+  }),
+};
+
+Smiley.defaultProps = {
+  nextGameDimensions: {
+    width: 8,
+    height: 8,
+  },
 };
