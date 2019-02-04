@@ -12,6 +12,9 @@
     "react-seven-segment-display": "github:macdja38/react-seven-segment-display#macdja38-manual-js",
     "use-react-router": "^1.0.3"
   },
+  "resolutions": {
+    "terser": "3.14.1"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

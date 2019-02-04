@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  client:
+    restart: unless-stopped
+    build: "."
+    expose:
+      - "3000"
+    networks:
+      - web
+      - default
+    labels:
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:minesweeper.ryke.xyz;PathPrefix:/"
+      - "traefik.port=5000"
+      - "traefik.protocol=http"
+      - "traefik.frontend.entryPoints=http,https"
+
+networks:
+  web:
+    external: true

@@ -1,4 +1,4 @@
-const API_ROOT = 'http://localhost:8000/api/';
+const API_ROOT = process.env.NODE_ENV === 'production' ? '/api/' : 'http://localhost:8000/api/';
 
 const games = `${API_ROOT}games/`;
 const game = id => `${API_ROOT}games/${id}/`;
