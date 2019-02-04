@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import gridType from '../../../props/gridProp';
+import { gridType } from '../../../props/gridProp';
 import { isFlagged } from '../../../services/api/grid';
 import NSevenSegmentDisplay from './NSevenSegmentDisplay';
 

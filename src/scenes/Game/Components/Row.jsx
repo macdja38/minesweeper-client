@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function Row({ spread, children }) {
-  let style = {
+  const style = {
     display: 'flex',
     alignItems: 'center',
   };

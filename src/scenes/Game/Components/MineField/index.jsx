@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+/* globals alert */
+
+import React from 'react';
 import PropTypes from 'prop-types';
-import gridType from '../../../../props/gridProp';
+import { gridType } from '../../../../props/gridProp';
 import styles from './index.module.css';
 import {
   extractAdjacent,
@@ -15,7 +17,6 @@ function cx(...args) {
 }
 
 function getTile(tile) {
-  console.log(tile);
   if (isFlagged(tile)) {
     return '🚩';
   }
@@ -33,9 +34,12 @@ function getTile(tile) {
 }
 
 function getTileElement(tile, revealHandler, flagHandler, x, y) {
+  const key = `${tile}-${x}-${y}`;
+
   if (isHidden(tile)) {
     return (
       <button
+        key={key}
         type="button"
         className={cx(styles.tile, styles.hidden)}
         onClick={e => revealHandler(e, x, y)}
@@ -45,18 +49,30 @@ function getTileElement(tile, revealHandler, flagHandler, x, y) {
       </button>);
   }
   return (
-    <div className={cx(styles.tile, styles.revealed)}>
+    <div key={key} className={cx(styles.tile, styles.revealed)}>
       {getTile(tile)}
     </div>);
 }
 
-export default function MineField({ loading, grid, id, width, height, setGame, completed }) {
-  const [disabled, setDisabled] = useState(false);
-
+export default function MineField({
+  loading,
+  grid,
+  id,
+  width,
+  height,
+  setGame,
+  completed,
+}) {
   if (loading) {
-    return <p />;
+    return (
+      <div className={styles.field}>
+        {new Array(height)
+          .fill(0)
+          .map((value, y) => new Array(width)
+            .fill(128)
+            .map((tile, x) => getTileElement(tile, () => {}, () => {}, x, y)))}
+      </div>);
   }
-
   const clickHandler = (updateMethod, e, x, y) => {
     e.preventDefault();
     if (!completed) {
@@ -66,14 +82,9 @@ export default function MineField({ loading, grid, id, width, height, setGame, c
     }
   };
 
-  const revealHandler = (e, x, y) => {
-    return clickHandler(reveal, e, x, y);
-  };
+  const revealHandler = (e, x, y) => clickHandler(reveal, e, x, y);
 
-  const flagHandler = (e, x, y) => {
-    return clickHandler(flag, e, x, y);
-  };
-
+  const flagHandler = (e, x, y) => clickHandler(flag, e, x, y);
 
   const field = grid
     .reduce((acc, row, y) => [
@@ -86,17 +97,19 @@ export default function MineField({ loading, grid, id, width, height, setGame, c
 
 MineField.propTypes = {
   grid: gridType,
-  id: PropTypes.string,
+  id: PropTypes.number,
   width: PropTypes.number,
   height: PropTypes.number,
   setGame: PropTypes.func.isRequired,
   loading: PropTypes.bool,
+  completed: PropTypes.bool,
 };
 
 MineField.defaultProps = {
   grid: [],
-  id: '',
-  width: 0,
-  height: 0,
+  id: 0,
+  width: 8,
+  height: 8,
   loading: false,
+  completed: false,
 };

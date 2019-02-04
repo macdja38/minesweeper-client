@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import useReactRouter from 'use-react-router';
 
 import styles from './index.module.css';
-import useReactRouter from 'use-react-router';
 import { createGame } from '../../../../services/api/game';
 
 function getSmiley(state) {

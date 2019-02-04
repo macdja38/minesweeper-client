@@ -5,7 +5,6 @@ import styles from './index.module.css';
 export default function DropDown({ label, children }) {
   const [open, setOpen] = useState(false);
 
-
   return (
     <div>
       <button
@@ -26,5 +25,9 @@ export default function DropDown({ label, children }) {
 
 DropDown.propTypes = {
   label: PropTypes.string.isRequired,
-  children: PropTypes.arrayOf(PropTypes.element).isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
 };
