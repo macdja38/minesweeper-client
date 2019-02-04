@@ -53,13 +53,21 @@ export default function MineField({ loading, grid, id, width, height, setGame, c
     return <p />;
   }
 
+  const clickHandler = (updateMethod, e, x, y) => {
+    e.preventDefault();
+    if (!completed) {
+      updateMethod({ id, x, y })
+        .then(game => setGame(game))
+        .catch(error => alert(error.message));
+    }
+  };
+
   const revealHandler = (e, x, y) => {
-    reveal({ id, x, y }).then(game => setGame(game));
+    return clickHandler(reveal, e, x, y);
   };
 
   const flagHandler = (e, x, y) => {
-    e.preventDefault();
-    flag({ id, x, y }).then(game => setGame(game));
+    return clickHandler(flag, e, x, y);
   };
 
 
@@ -71,3 +79,20 @@ export default function MineField({ loading, grid, id, width, height, setGame, c
 
   return <div className={styles.field}>{field}</div>;
 }
+
+MineField.propTypes = {
+  grid: gridType,
+  id: PropTypes.string,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  setGame: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+};
+
+MineField.defaultProps = {
+  grid: [],
+  id: '',
+  width: 0,
+  height: 0,
+  loading: false,
+};
