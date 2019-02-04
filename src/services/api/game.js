@@ -1,19 +1,14 @@
 /* global fetch */
 import routes from './routes';
 
-function delay(time) {
-  return new Promise(resolve => setTimeout(resolve, time));
-}
-
 export function createGame() {
-  return delay(3000)
-    .then(() => fetch(routes.games, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}),
-    }))
+  return fetch(routes.games, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({}),
+  })
     .then(response => response.json());
 }
 
@@ -22,30 +17,28 @@ export function getGame(id) {
     .then(response => response.json());
 }
 
-export function flag({ id, x, y }) {
-  return fetch(routes.flag(id), {
+function action(route, { x, y }) {
+  return fetch(route, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ x, y }),
   })
-    .then(response => response.json());
+    .then((response) => {
+      if (response.ok === true) {
+        return response.json();
+      }
+      return response.json().then((json) => {
+        throw new Error(json.status);
+      });
+    });
+}
+
+export function flag({ id, x, y }) {
+  return action(routes.flag(id), { x, y });
 }
 
 export function reveal({ id, x, y }) {
-  return fetch(routes.reveal(id), {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ x, y }),
-  })
-    .then(response => response.json());
+  return action(routes.reveal(id), { x, y });
 }
-
-
-global.createGame = createGame();
-global.getGame = getGame;
-global.flag = flag;
-global.reveal = reveal;
