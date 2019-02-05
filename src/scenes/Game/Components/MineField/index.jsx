@@ -48,8 +48,17 @@ export default function MineField({
           // in this case array indexes are fine when combined with tile value
           // as so long as tile value and tile location stay the same
           // tiles can be interchanged freely
-          // eslint-disable-next-line react/no-array-index-key
-          <Tile key={`${tile}-${x}-${y}`} tile={tile} revealHandler={revealHandler} flagHandler={flagHandler} x={x} y={y} />)),
+          /* eslint-disable react/no-array-index-key */
+          <Tile
+            key={`${tile}-${x}-${y}`}
+            tile={tile}
+            revealHandler={revealHandler}
+            flagHandler={flagHandler}
+            completed={completed}
+            x={x}
+            y={y}
+          />)),
+        /* eslint-enable react/no-array-index-key */
       ], []);
   }
 

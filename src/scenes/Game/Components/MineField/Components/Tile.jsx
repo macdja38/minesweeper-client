@@ -12,25 +12,56 @@ function cx(...args) {
   return args.join(' ');
 }
 
-function getTile(tile) {
-  if (isFlagged(tile)) {
-    return '🚩';
+function getTileInfo(tile, completed) {
+  const flagged = isFlagged(tile);
+  const hidden = isHidden(tile);
+  const bomb = isBomb(tile);
+
+  if (flagged && (!completed || bomb)) {
+    return {
+      symbol: '🚩',
+      button: true,
+    };
   }
-  if (isHidden(tile)) {
-    return ' ';
+  if (hidden && flagged && !bomb && completed) {
+    return {
+      symbol: '❌',
+      button: false,
+    };
   }
-  if (isBomb(tile)) {
-    return '💣';
+  if (!flagged && bomb && completed) {
+    return {
+      symbol: '💣',
+      button: false,
+    };
+  }
+  if (hidden) {
+    return {
+      symbol: ' ',
+      button: true,
+    };
+  }
+  if (bomb) {
+    return {
+      symbol: '💣',
+      button: false,
+    };
   }
   const labelNumber = extractAdjacent(tile);
   if (labelNumber > 0) {
-    return labelNumber.toString();
+    return {
+      symbol: labelNumber.toString(),
+      button: false,
+      number: true,
+    };
   }
-  return '';
+  return {
+    symbol: ' ',
+    button: false,
+  };
 }
 
-function getColour(tile) {
-  const symbol = getTile(tile);
+function getColour(symbol) {
   switch (symbol) {
     case '8':
       return 'darkgray';
@@ -57,10 +88,13 @@ export default function Tile({
   tile,
   revealHandler,
   flagHandler,
+  completed,
   x,
   y,
 }) {
-  if (isHidden(tile)) {
+  const meta = getTileInfo(tile, completed);
+
+  if (meta.button) {
     return (
       <button
         type="button"
@@ -68,18 +102,21 @@ export default function Tile({
         onClick={e => revealHandler(e, x, y)}
         onContextMenu={e => flagHandler(e, x, y)}
       >
-        {getTile(tile)}
+        {meta.symbol}
       </button>);
+  }
+  const style = {
+    fontWeight: 'bold',
+  };
+  if (meta.number) {
+    style.color = getColour(meta.symbol);
   }
   return (
     <div
-      style={{
-        color: getColour(tile),
-        fontWeight: 'bold',
-      }}
+      style={style}
       className={cx(styles.tile, styles.revealed)}
     >
-      {getTile(tile)}
+      {meta.symbol}
     </div>);
 }
 
@@ -87,6 +124,7 @@ Tile.propTypes = {
   tile: PropTypes.number.isRequired,
   revealHandler: PropTypes.func,
   flagHandler: PropTypes.func,
+  completed: PropTypes.bool,
   x: PropTypes.number,
   y: PropTypes.number,
 };
@@ -96,6 +134,7 @@ Tile.defaultProps = {
   },
   flagHandler: () => {
   },
+  completed: false,
   x: 0,
   y: 0,
 };
